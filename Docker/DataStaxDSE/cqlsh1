@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+echo "
+This script starts a cqlsh session on the DSE Node 1 container.
+
+The shared storage folder is mounted on this container at /shared-storage-1.
+"
+
+read -q "REPLY?Press enter to continue: "
+
+echo "###############################"
+echo "CQL Shell on DSE Node 1"
+echo "###############################"
+docker exec -it DSE-N1 cqlsh

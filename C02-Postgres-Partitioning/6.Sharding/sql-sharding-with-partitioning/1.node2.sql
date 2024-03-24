@@ -1,7 +1,8 @@
 -- create a schema for our project
-DROP SCHEMA IF EXISTS node2_schema CASCADE;
-CREATE SCHEMA node2_schema;
+CREATE SCHEMA IF NOT EXISTS node2_schema;
 SET search_path TO node2_schema;
+
+DROP TABLE IF EXISTS temps_2023, temps_2021;
 
 CREATE TABLE IF NOT EXISTS temps_2023 (
     reading_date date PRIMARY KEY,

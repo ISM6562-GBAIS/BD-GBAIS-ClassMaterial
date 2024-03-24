@@ -3,8 +3,9 @@
 
 CREATE EXTENSION IF NOT EXISTS postgres_fdw;
 
-DROP SCHEMA IF EXISTS node1_schema CASCADE;
-CREATE SCHEMA node1_schema;
+CREATE SCHEMA IF NOTE EXISTS node1_schema;
+
+DROP TABLE IF EXISTS temperatures, temps_2023, temps_2022, temps_2021, temps_default;
 
 -- create master partitioned table
 CREATE TABLE IF NOT EXISTS temperatures (
@@ -50,10 +51,11 @@ ALTER TABLE temperatures ATTACH PARTITION temps_2022
 ALTER TABLE temperatures ATTACH PARTITION temps_2021
     FOR VALUES FROM ('2021-01-01') TO ('2022-01-01');
 
-CREATE TABLE locations (
-    ID SERIAL PRIMARY KEY,
-    reading_date date FOREIGN KEY REFERENCES temperatures(reading_date),
-    city VARCHAR(100),
-    node VARCHAR(100)
-);
+--DROP TABLE IF EXISTS locations;
+--CREATE TABLE locations (
+--    ID SERIAL PRIMARY KEY,
+--    reading_date date FOREIGN KEY REFERENCES temperatures(reading_date),
+--    city VARCHAR(100),
+--    node VARCHAR(100)
+--);
 

@@ -1,4 +1,4 @@
--- NOTE: If you are rerunning this SQL script, and node1_schema exists on node one you must first drop that
+-- NOTE: If you are rerunning this SQL script, and sharding_schema exists on node one you must first drop that
 -- schema on node1. Failure to do this will result in the following script seemingly runs OK, but the
 -- tables will not be created. 
 

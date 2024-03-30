@@ -1,1 +1,5 @@
 .DS_Store
+persistent-storage
+pgadmin-data
+pgadmin_data
+MongoDB*

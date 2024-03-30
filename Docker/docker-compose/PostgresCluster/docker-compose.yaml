@@ -73,7 +73,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_CONFIG_ENABLE_PSQL: "True"
     volumes:
-      - pgadmin_data_cluster:/var/lib/pgadmin
+      - pgadmin_data:/var/lib/pgadmin
     networks:
       - postgres_cluster      
     deploy: 

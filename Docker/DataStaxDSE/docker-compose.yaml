@@ -1,0 +1,156 @@
+version: '3'
+
+# see: https://docs.datastax.com/en/docker/docs/managing/recommended-settings.html
+
+# NOTE: his docker-compose file is for a 3 node cluster with DSE Studio. It's recourses are limited to ensure
+# this cluster can run simultaneously with other clusters on the same host (i.e. Cluouders, Postgres, MongoDB, etc.)
+# If you want more performance from the Cassandra cluster, you can increase the resources for each node.
+
+services:
+
+  DSE-N1:
+    image: datastax/dse-server:6.8.16-ubi7
+    command: ["-k", "-g", "-s"]
+    container_name: DSE-N1
+    hostname: DSE-N1
+    # use static ip address
+    networks:
+     dc1ring:
+      ipv4_address: 172.30.0.2
+    ports:
+      - 9042:9042
+      - 8182:8182
+      - 9077:9077
+    # Maps cassandra exercises to a local folder.
+    # This preserves data across container restarts.
+    volumes:
+      # you will need to chmod these folders to 777
+      - ./dse-n1:/var/lib/cassandra # see: https://docs.datastax.com/en/docker/docs/managing/mount-data-volumes.html
+      - ./dse-shared:/home/shared
+    environment:
+      - DS_LICENSE=accept
+      - MAX_HEAP_SIZE=1500M
+      - SEEDS=DSE-N1, DSE-N2, DSE-N3
+      - START_RPC=true
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G  
+    restart: always   
+
+  DSE-N2:
+    image: datastax/dse-server:6.8.16-ubi7
+    command: ["-k", "-g", "-s"]
+    container_name: DSE-N2
+    hostname: DSE-N2
+    networks:
+        dc1ring:
+            ipv4_address: 172.30.0.3
+    ports:
+      - 9043:9042
+      - 8183:8182
+      - 9078:9077
+    volumes:
+      # you will need to chmod these folders to 777
+      - ./dse-n2:/var/lib/cassandra # see: https://docs.datastax.com/en/docker/docs/managing/mount-data-volumes.html
+      - ./dse-shared:/home/shared
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+    environment:
+      - DS_LICENSE=accept
+      - MAX_HEAP_SIZE=1500M
+      - SEEDS=DSE-N1, DSE-N2, DSE-N3
+      - START_RPC=true
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+    restart: always 
+
+  DSE-N3:
+    image: datastax/dse-server:6.8.16-ubi7
+    command: ["-k", "-g", "-s"]
+    container_name: DSE-N3
+    hostname: DSE-N3
+    networks:
+      dc1ring:
+        ipv4_address: 172.30.0.4
+    ports:
+      - 9044:9042
+      - 8184:8182
+      - 9079:9077
+    volumes:
+      # you will need to chmod these folders to 777
+      - ./dse-n3:/var/lib/cassandra # see: https://docs.datastax.com/en/docker/docs/managing/mount-data-volumes.html
+      - ./dse-shared:/home/shared
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+    environment:
+      - DS_LICENSE=accept
+      - MAX_HEAP_SIZE=1500M
+      - SEEDS=DSE-N1, DSE-N2, DSE-N3
+      - START_RPC=true
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+    restart: always 
+ 
+  DSE-STUDIO:
+    image: datastax/dse-studio:latest
+    container_name: DSE-STUDIO
+    hostname: DSE-STUDIO
+    networks:
+      dc1ring:
+        ipv4_address: 172.30.0.5
+    ports:
+      # The Web UI exposed to our host
+      - "9091:9091"
+    volumes:
+      - ./dse-studio:/var/lib/datastax-studio
+      - ./dse-shared:/home/shared
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+    environment:
+      - DS_LICENSE=accept
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 3G
+
+#  DSE-OPS:
+#    image: "datastax/dse-opscenter:6.8.30"
+#    container_name: DSE-OPS
+#    hostname: DSE-OPS
+#    networks:
+#      dc1ring:
+#        ipv4_address: 172.30.0.6
+#    ports:
+#      - 7777:8888
+#    environment:
+#      - DS_LICENSE=accept
+#
+
+networks:
+    dc1ring:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.30.0.0/16
+
+volumes:
+  dse-n1:
+  dse-n2:
+  dse-n3:
+  dse-studio:

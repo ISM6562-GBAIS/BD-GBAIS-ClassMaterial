@@ -1,0 +1,24 @@
+student_id,f_name,l_name,course,grade
+1000,'Tim','Smith','ISM6562',95
+1001,'John','Jones','ISM6562',97
+1002,'Jane','Williams','ISM6562',89
+1003,'Betty','Johnson','ISM6564',78
+1004,'Jim','Bean','ISM6564',65
+1005,'Frank','Gambali','ISM6564',97
+1006,'Judy','Garland','ISM6564',83
+1007,'Tom','Garland','ISM6564',79
+1008,'Bill','Garland','ISM6564',56
+1009,'Tom','Jones','ISM6564',34
+1010,'Bruce','Dickenson','ISM6562',87
+1011,'Randy','Rhoads','ISM6562',87
+1012,'Edward','Van Halen','ISM6562',87
+1013,'John','Five','ISM6562',87
+1014,'Marty','Friedman','ISM6562',87
+1015,'Jake','Lee','ISM6562',87
+1016,'Steve','Via','ISM6136',87
+1017,'Judy','Lonestar','ISM6136',87
+1018,'Judy','Doe','ISM6136',99
+1019,'Trudy','Doe','ISM6136',58
+1020,'Bill','Jones','ISM6136',81
+
+

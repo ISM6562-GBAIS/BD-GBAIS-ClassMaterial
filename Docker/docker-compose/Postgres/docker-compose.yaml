@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+
+  db:
+    container_name: pgdb
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: ism6562
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 8G
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 9999:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: student@usf.edu
+      PGADMIN_DEFAULT_PASSWORD: ism6562
+      PGADMIN_CONFIG_ENABLE_PSQL: "True"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    deploy: 
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+volumes:
+  postgres_data:
+  pgadmin_data:

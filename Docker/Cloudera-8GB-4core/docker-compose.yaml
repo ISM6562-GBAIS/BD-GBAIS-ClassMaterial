@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+
+  cloudera:
+    container_name: "Cloudera"
+    image: "cloudera/quickstart:latest"
+    hostname: quickstart.cloudera
+    privileged: true
+    command: /usr/bin/docker-quickstart 
+#    command: "/home/cloudera/clouder-manager --express" - only run this if you want the cloudera manager (it normally isn't required)
+    stdin_open: true # keep process stdin open awaiting connect (keeps cloudera running)
+    tty: true # specifies that stdin should be a terminal
+    ports: # see port list https://docs.cloudera.com/cdp-private-cloud-base/latest/installation/topics/cdpdc-ports-used-by-runtime.html
+      - 80:80       # quickstart
+      - 8020:8020   # HDFS 
+      - 2222:2222   # SSH
+      - 7180:7180   # Cloudera Manager
+      - 8888:8888   # Hue (8888 is sometimes used by jupyter, need to avoid collision) uname/pword=cloudera/cloudera
+      - 11000:11000 # Oozie
+      - 50070:50070 # HDFS Rest Namenode
+      - 50075:50075 # HDFS Rest Datanode
+      - 2181:2181   # Zookeeper
+      - 8032:8032   # yarn.resourcemanager.address
+      - 8033:8033   # yarn.resourcemanager.admin.address
+      - 8088:8088   # yarn.resourcemanager.webapp.address
+      - 8090:8090   # yarn.resourcemanager.webapp.https.address
+      - 8042:8042   # yarn.nodemanager.webapp.address
+      - 8044:8044   # yarn.nodemanager.webapp.https.address
+      - 19888:19888 # MapReduce Job History
+      - 50030:50030 # MapReduce Job Tracker
+      - 8983:8983   # Solr
+      - 16000:16000 # Sqoop Metastore
+      - 60010:60010 # HBase Master
+      - 60030:60030 # HBase Region
+      - 9090:9090   # HBase Thrift
+      - 8080:8080   # HBase Rest
+      - 7077:7077   # Spark Master
+      - 9083:9083   # Metastore	
+      - 10000:10000 # HiveServer2	10000	hive.server2.thrift.port	
+      - 10002:10002 # HiveServer2 Web User Interface (UI)	  
+    restart: always
+# To make cloudera persistent across restarts, you need to follow the instructions in the PERSISTENT.md file
+#    volumes: 
+#      - persistent-storage-8-4:/var/lib
+#      - shared-storage-8-4:/home/cloudera/DEV01
+    deploy: 
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+
+#volumes:
+#  shared-storage-8-4:
+#  persistent-storage-8-4:
+  

@@ -32,6 +32,7 @@ dse-studio/
 .DS_Store
 NOT-FOR-RELEASE/
 persistent-storage
+shared-storage
 pgadmin-data
 pgadmin_data
 MongoDB*
